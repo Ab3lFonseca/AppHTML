@@ -1,18 +1,30 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>App Que Não é APP</title>
+  <link rel="stylesheet" href="Front-End/styles/styles.css">
 </head>
 <body>
-        <header class="indexHead">App Que Não é APP</header>
-    <main>
-        <input type="email" placeholder="Digite seu email">
-        <input type="password" placeholder="Digite sua senha">
-        <button>Entrar</button> <!-- Não linkar troca pagina aqui, função no JS -->
-        <button>Cadastrar</button>
-    </main>
-    <footer>Aqui você pensa que esta em um app, mas não está</footer>
+  <header class="app-header">
+    <h1>App Que Não é APP</h1>
+  </header>
+
+  <main id="app-main">
+    <!-- Tela inicial de login -->
+    <section id="login-view" class="view active">
+      <input type="email" placeholder="Digite seu email">
+      <input type="password" placeholder="Digite sua senha">
+      <button onclick="navigateTo('pages/paginaInicial.html')">Entrar</button>
+      <button onclick="navigateTo('pages/perfil.html')">Cadastrar</button>
+    </section>
+  </main>
+
+  <footer class="app-footer">
+    Aqui você pensa que está em um app, mas não está
+  </footer>
+
+  <script src="/Front-End/js/app.js" defer></script>
 </body>
 </html>
