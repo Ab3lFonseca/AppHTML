@@ -3,24 +3,124 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>paginaInicial</title>
+    <title>Página Inicial - App Que Não é APP</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../styles/global.css">
+    <link rel="stylesheet" href="../styles/paginaInicial.css">
 </head>
 <body>
-    <header>
-        <div class="logo">Logo Muito Incrivel Não App</div>
-        <select name="perfilSair" id="sair">Olá, usuário</select> <!-- Add JS para colocar "Olá, + nome do usuario" -->
-    </header>
-    <main>
-         <div id="mapa">
-            <!-- Adicionar mapa tomando conta da home -->
-         </div>
-         <div id="botoes">
-            <button id="home">Home</button>
-            <button id="locais">Locais</button>
-            <button id="ranking">Ranking</button>
-            <button id="perfil">Perfil</button>
-         </div>
-    </main>
+    <!-- App Container -->
+    <div id="app-container" class="app-container">
+        
+        <!-- Header -->
+        <header class="app-header fixed-top">
+            <nav class="navbar">
+                <div class="container-fluid">
+                    <a class="navbar-brand" href="#" onclick="navigateTo('paginaInicial.html')">
+                        <i class="bi bi-phone"></i>
+                        App Que Não é APP
+                    </a>
+                    
+                    <!-- Navigation Menu -->
+                    <div class="nav-actions">
+                        <button class="nav-btn active" onclick="navigateTo('paginaInicial.html')" title="Início">
+                            <i class="bi bi-house"></i>
+                        </button>
+                        <button class="nav-btn" onclick="navigateTo('locais.html')" title="Locais">
+                            <i class="bi bi-geo-alt"></i>
+                        </button>
+                        <button class="nav-btn" onclick="navigateTo('ranking.html')" title="Ranking">
+                            <i class="bi bi-trophy"></i>
+                        </button>
+                        <button class="nav-btn" onclick="navigateTo('perfil.html')" title="Perfil">
+                            <i class="bi bi-person"></i>
+                        </button>
+                        <button class="nav-btn logout-btn" onclick="logout()" title="Sair">
+                            <i class="bi bi-box-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </nav>
+        </header>
+
+        <!-- Main Content Area -->
+        <main id="app-main" class="app-main">
+            <div class="container">
+                <div class="welcome-section">
+                    <h1 class="display-4">Bem-vindo!</h1>
+                    <p class="lead">Explore locais incríveis ao seu redor</p>
+                </div>
+                
+                <!-- Quick Actions -->
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <div class="feature-card" onclick="navigateTo('locais.html')">
+                            <div class="feature-icon">
+                                <i class="bi bi-geo-alt"></i>
+                            </div>
+                            <h3>Explorar Locais</h3>
+                            <p>Descubra novos lugares incríveis</p>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="feature-card" onclick="navigateTo('ranking.html')">
+                            <div class="feature-icon">
+                                <i class="bi bi-trophy"></i>
+                            </div>
+                            <h3>Ver Ranking</h3>
+                            <p>Confira os locais mais bem avaliados</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Map Section -->
+                <div class="map-section mt-4">
+                    <h3 class="text-center mb-3">
+                        <i class="bi bi-map"></i> Mapa da Região
+                    </h3>
+                    <div class="map-container">
+                        <iframe 
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3657.1975!2d-46.6333824!3d-23.5505199!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjPCsDMzJzAxLjkiUyA0NsKwMzgnMDAuMiJX!5e0!3m2!1spt-BR!2sbr!4v1234567890"
+                            width="100%" 
+                            height="300" 
+                            style="border:0; border-radius: 1rem;" 
+                            allowfullscreen="" 
+                            loading="lazy" 
+                            referrerpolicy="no-referrer-when-downgrade">
+                        </iframe>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="app-footer">
+            <div class="container text-center">
+                <p>&copy; 2024 App Que Não é APP. Aqui você pensa que está em um app, mas não está.</p>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="loading-overlay">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Carregando...</span>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
+    <!-- Custom JS -->
+    <script src="../js/global.js"></script>
+    <script src="../js/paginaInicial.js"></script>
 </body>
 </html>
+

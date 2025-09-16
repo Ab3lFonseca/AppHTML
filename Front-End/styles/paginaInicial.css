@@ -1,0 +1,173 @@
+/* Página Inicial Specific Styles */
+
+/* Welcome Section */
+.welcome-section {
+  background: var(--white);
+  border-radius: var(--border-radius-lg);
+  padding: 3rem 2rem;
+  margin-bottom: 2rem;
+  text-align: center;
+  box-shadow: var(--shadow);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.7) 100%);
+  backdrop-filter: blur(10px);
+}
+
+.welcome-section h1 {
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 1rem;
+  font-size: 3rem;
+  font-weight: 800;
+}
+
+.welcome-section .lead {
+  color: var(--secondary-color);
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+
+/* Feature Cards */
+.feature-card {
+  background: var(--white);
+  border-radius: var(--border-radius);
+  padding: 2rem;
+  text-align: center;
+  box-shadow: var(--shadow);
+  transition: var(--transition);
+  cursor: pointer;
+  border: 2px solid transparent;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.feature-card:hover {
+  transform: translateY(-10px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--primary-color);
+}
+
+.feature-card:nth-child(odd) {
+  border-left: 4px solid var(--primary-color);
+}
+
+.feature-card:nth-child(even) {
+  border-left: 4px solid var(--warning-color);
+}
+
+.feature-icon {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 1.5rem;
+  background: var(--gradient-primary);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition);
+}
+
+.feature-card:hover .feature-icon {
+  transform: scale(1.1) rotate(5deg);
+}
+
+.feature-icon i {
+  font-size: 2.5rem;
+  color: var(--white);
+}
+
+.feature-card h3 {
+  color: var(--dark-color);
+  margin-bottom: 1rem;
+  font-weight: 700;
+  font-size: 1.5rem;
+}
+
+.feature-card p {
+  color: var(--secondary-color);
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+/* Map Section */
+.map-section {
+  background: var(--white);
+  border-radius: var(--border-radius);
+  padding: 2rem;
+  box-shadow: var(--shadow);
+  margin-top: 2rem;
+}
+
+.map-section h3 {
+  color: var(--dark-color);
+  margin-bottom: 1.5rem;
+  font-weight: 700;
+}
+
+.map-section h3 i {
+  color: var(--primary-color);
+  margin-right: 0.5rem;
+}
+
+.map-container {
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  transition: var(--transition);
+}
+
+.map-container:hover {
+  transform: scale(1.02);
+  box-shadow: var(--shadow-lg);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .welcome-section {
+    padding: 2rem 1.5rem;
+    margin: 1rem;
+  }
+  
+  .welcome-section h1 {
+    font-size: 2.5rem;
+  }
+  
+  .feature-card {
+    margin-bottom: 1rem;
+    padding: 1.5rem;
+  }
+  
+  .feature-icon {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 1rem;
+  }
+  
+  .feature-icon i {
+    font-size: 2rem;
+  }
+  
+  .map-section {
+    margin: 1rem;
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .welcome-section h1 {
+    font-size: 2rem;
+  }
+  
+  .welcome-section .lead {
+    font-size: 1rem;
+  }
+  
+  .feature-card h3 {
+    font-size: 1.25rem;
+  }
+}
+

@@ -1,27 +1,185 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cadastro</title>
-  <link rel="stylesheet" href="/Front-End/styles/styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro - App Que Não é APP</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../styles/global.css">
+  <link rel="stylesheet" href="../styles/cadastro.css">
 </head>
 <body>
-  <main>
-    <div class="cadastro-container">
-    <h2>Cadastro</h2>
-    <form id="cadastroForm">
-        <input type="text" placeholder="Nome completo" required>
-        <input type="email" placeholder="E-mail" required>
-        <input type="password" placeholder="Senha" required>
-        <input type="password" placeholder="Confirmar senha" required>
-        <button type="submit">Cadastrar</button>
-        <p>Já tem conta?</p>
-        <button type="button" class="btn-voltar" onclick="irParaLogin()">Voltar ao Login</button>
-    </form>
-</div>
+    <!-- App Container -->
+    <div id="app-container" class="app-container">
+        
+        <!-- Header -->
+        <header class="app-header fixed-top">
+            <nav class="navbar">
+                <div class="container-fluid">
+                    <a class="navbar-brand" href="#" onclick="navigateTo('../index.html')">
+                        <i class="bi bi-phone"></i>
+                        App Que Não é APP
+                    </a>
+                </div>
+            </nav>
+        </header>
 
-  </main>
-  <script src="../js/app.js" defer></script>
+        <!-- Main Content Area -->
+        <main id="app-main" class="app-main">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-md-6 col-lg-5">
+                        <div class="signup-card">
+                            <div class="text-center mb-4">
+                                <i class="bi bi-person-plus display-4 text-primary"></i>
+                                <h2 class="mt-3">Criar Conta</h2>
+                                <p class="text-muted">Preencha seus dados</p>
+                            </div>
+                            
+                            <form id="signup-form">
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="signup-nome" class="form-label">
+                                            <i class="bi bi-person"></i> Nome
+                                        </label>
+                                        <input type="text" class="form-control" id="signup-nome" placeholder="Digite seu nome" required>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="signup-sobrenome" class="form-label">
+                                            <i class="bi bi-person"></i> Sobrenome
+                                        </label>
+                                        <input type="text" class="form-control" id="signup-sobrenome" placeholder="Digite seu sobrenome" required>
+                                    </div>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="signup-email" class="form-label">
+                                        <i class="bi bi-envelope"></i> Email
+                                    </label>
+                                    <input type="email" class="form-control" id="signup-email" placeholder="Digite seu email" required>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="signup-senha" class="form-label">
+                                        <i class="bi bi-lock"></i> Senha
+                                    </label>
+                                    <input type="password" class="form-control" id="signup-senha" placeholder="Digite sua senha" required>
+                                </div>
+                                
+                                <div class="mb-4">
+                                    <label for="signup-confirmar-senha" class="form-label">
+                                        <i class="bi bi-lock-fill"></i> Confirmar Senha
+                                    </label>
+                                    <input type="password" class="form-control" id="signup-confirmar-senha" placeholder="Confirme sua senha" required>
+                                </div>
+                                
+                                <button type="submit" class="btn btn-primary w-100 mb-3">
+                                    <i class="bi bi-person-plus"></i> Criar Conta
+                                </button>
+                                
+                                <button type="button" class="btn btn-outline-secondary w-100" onclick="navigateTo('../index.html')">
+                                    <i class="bi bi-arrow-left"></i> Voltar ao Login
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="app-footer">
+            <div class="container text-center">
+                <p>&copy; 2024 App Que Não é APP. Aqui você pensa que está em um app, mas não está.</p>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="loading-overlay">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Carregando...</span>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Custom JS -->
+    <script src="../js/global.js"></script>
+    <script src="../js/cadastro.js"></script>
+    
+    <script>
+        document.getElementById('signup-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const nome = document.getElementById('signup-nome').value;
+            const sobrenome = document.getElementById('signup-sobrenome').value;
+            const email = document.getElementById('signup-email').value;
+            const senha = document.getElementById('signup-senha').value;
+            const confirmarSenha = document.getElementById('signup-confirmar-senha').value;
+            
+            // Validate passwords match
+            if (senha !== confirmarSenha) {
+                showNotification('As senhas não coincidem!', 'error');
+                return;
+            }
+            
+            // Validate password length
+            if (senha.length < 6) {
+                showNotification('A senha deve ter pelo menos 6 caracteres!', 'error');
+                return;
+            }
+            
+            // Save user data
+            const userData = {
+                nome: nome,
+                sobrenome: sobrenome,
+                email: email,
+                senha: senha // In real app, this would be hashed
+            };
+            
+            localStorage.setItem('appUser', JSON.stringify(userData));
+            
+            showNotification('Conta criada com sucesso!', 'success');
+            
+            // Redirect to login after 2 seconds
+            setTimeout(() => {
+                window.location.href = '../index.html';
+            }, 2000);
+        });
+
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `alert alert-${type === 'error' ? 'danger' : type} alert-dismissible fade show position-fixed`;
+            notification.style.cssText = `
+                top: 20px;
+                right: 20px;
+                z-index: 10000;
+                min-width: 300px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            `;
+            
+            notification.innerHTML = `
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.remove();
+                }
+            }, 5000);
+        }
+    </script>
 </body>
 </html>
+
