@@ -94,28 +94,15 @@
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
+    <!-- Supabase JS -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
     <!-- Custom JS -->
+    <script src="/Front-End/js/supabase.js"></script>
     <script src="/Front-End/js/global.js"></script>
     <script src="/Front-End/js/ranking.js"></script>
     
-    <script>
-        // Load ranking when page loads
-        document.addEventListener('DOMContentLoaded', function() {
-            loadRanking();
-        });
 
-        function loadRanking() {
-            // This would normally come from an API
-            // For now, we'll leave it empty as requested (no fake data)
-            const rankingList = document.getElementById('ranking-list');
-            rankingList.innerHTML = `
-                <div class="text-center p-4">
-                    <i class="bi bi-list-ol" style="font-size: 2rem; color: #6c757d;"></i>
-                    <p class="text-muted mt-2">Os rankings serão carregados quando conectado à API.</p>
-                </div>
-            `;
-        }
-    </script>
 </body>
 </html>
 

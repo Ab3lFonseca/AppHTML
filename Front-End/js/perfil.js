@@ -2,26 +2,57 @@
 
 // Initialize page
 document.addEventListener('DOMContentLoaded', function() {
+  // Inicializar Supabase
+  if (window.SupabaseAPI) {
+    SupabaseAPI.init();
+  }
+  
   loadProfile();
   setupFormValidation();
   setupAnimations();
 });
 
-function loadProfile() {
-  // Load user data from localStorage or API
-  const userData = JSON.parse(localStorage.getItem('appUser') || '{}');
-  
-  if (userData.nome) {
-    document.getElementById('profile-nome').value = userData.nome || '';
-    document.getElementById('profile-sobrenome').value = userData.sobrenome || '';
-    document.getElementById('profile-email').value = userData.email || '';
-    document.getElementById('profile-telefone').value = userData.telefone || '';
-    document.getElementById('profile-bio').value = userData.bio || '';
-    document.getElementById('profile-display-name').textContent = userData.nome || 'Usuário';
+async function loadProfile() {
+  try {
+    // Tentar carregar do usuário atual
+    const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    
+    if (currentUser.idUsu && window.SupabaseAPI) {
+      // Carregar dados atualizados do Supabase
+      const { data: userData, error } = await SupabaseAPI.usuarios.getById(currentUser.idUsu);
+      
+      if (!error && userData) {
+        // Atualizar localStorage com dados mais recentes
+        localStorage.setItem('currentUser', JSON.stringify(userData));
+        localStorage.setItem('appUser', JSON.stringify(userData));
+        fillProfileForm(userData);
+        return;
+      }
+    }
+    
+    // Fallback para dados do localStorage
+    const userData = JSON.parse(localStorage.getItem('appUser') || '{}');
+    fillProfileForm(userData);
+    
+  } catch (err) {
+    console.error('Erro ao carregar perfil:', err);
+    // Fallback para dados do localStorage
+    const userData = JSON.parse(localStorage.getItem('appUser') || '{}');
+    fillProfileForm(userData);
   }
   
   // Update profile stats (placeholder)
   updateProfileStats();
+}
+
+function fillProfileForm(userData) {
+  if (userData.nomeUsu || userData.nome) {
+    document.getElementById('profile-nome').value = userData.nomeUsu || userData.nome || '';
+    document.getElementById('profile-email').value = userData.emailUsu || userData.email || '';
+    document.getElementById('profile-telefone').value = userData.telefoneUsu || userData.telefone || '';
+    document.getElementById('profile-bio').value = userData.bio || '';
+    document.getElementById('profile-display-name').textContent = userData.nomeUsu || userData.nome || 'Usuário';
+  }
 }
 
 function setupFormValidation() {
@@ -100,7 +131,6 @@ function validateField(field) {
   
   switch(fieldName) {
     case 'nome':
-    case 'sobrenome':
       if (value.length < 2) {
         isValid = false;
         errorMessage = 'Deve ter pelo menos 2 caracteres';
@@ -150,7 +180,7 @@ function clearFieldError(field) {
   }
 }
 
-function saveProfile() {
+async function saveProfile() {
   const form = document.getElementById('profile-form');
   const inputs = form.querySelectorAll('input, textarea');
   let isFormValid = true;
@@ -168,11 +198,10 @@ function saveProfile() {
   }
   
   const userData = {
-    nome: document.getElementById('profile-nome').value,
-    sobrenome: document.getElementById('profile-sobrenome').value,
-    email: document.getElementById('profile-email').value,
-    telefone: document.getElementById('profile-telefone').value,
-    bio: document.getElementById('profile-bio').value
+    nomeUsu: document.getElementById('profile-nome').value.trim(),
+    emailUsu: document.getElementById('profile-email').value.trim(),
+    telefoneUsu: document.getElementById('profile-telefone').value.trim() || null,
+    bio: document.getElementById('profile-bio').value.trim() || null
   };
   
   // Show loading state
@@ -181,19 +210,36 @@ function saveProfile() {
   saveButton.innerHTML = '<i class="bi bi-hourglass-split me-2"></i>Salvando...';
   saveButton.disabled = true;
   
-  // Simulate API call
-  setTimeout(() => {
-    // Save to localStorage
-    localStorage.setItem('appUser', JSON.stringify(userData));
+  try {
+    const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
     
-    // Update display name
-    document.getElementById('profile-display-name').textContent = userData.nome || 'Usuário';
+    if (currentUser.idUsu && window.SupabaseAPI) {
+      // Atualizar no Supabase
+      const { data: updatedUser, error } = await SupabaseAPI.usuarios.update(currentUser.idUsu, userData);
+      
+      if (error) {
+        showNotification('Erro ao salvar perfil: ' + error, 'error');
+        return;
+      }
+      
+      if (updatedUser && updatedUser[0]) {
+        // Atualizar localStorage com dados atualizados
+        localStorage.setItem('currentUser', JSON.stringify(updatedUser[0]));
+        localStorage.setItem('appUser', JSON.stringify(updatedUser[0]));
+        
+        // Update display name
+        document.getElementById('profile-display-name').textContent = updatedUser[0].nomeUsu || 'Usuário';
+      }
+    } else {
+      // Fallback para localStorage apenas
+      const existingData = JSON.parse(localStorage.getItem('appUser') || '{}');
+      const mergedData = { ...existingData, ...userData };
+      localStorage.setItem('appUser', JSON.stringify(mergedData));
+      
+      // Update display name
+      document.getElementById('profile-display-name').textContent = userData.nomeUsu || 'Usuário';
+    }
     
-    // Restore button
-    saveButton.innerHTML = originalText;
-    saveButton.disabled = false;
-    
-    // Show success message
     showNotification('Perfil atualizado com sucesso!', 'success');
     
     // Add success animation
@@ -204,7 +250,15 @@ function saveProfile() {
         profileCard.style.transform = 'scale(1)';
       }, 200);
     }
-  }, 1500);
+    
+  } catch (err) {
+    console.error('Erro ao salvar perfil:', err);
+    showNotification('Erro na conexão. Tente novamente.', 'error');
+  } finally {
+    // Restore button
+    saveButton.innerHTML = originalText;
+    saveButton.disabled = false;
+  }
 }
 
 function updateProfileStats() {
@@ -302,6 +356,7 @@ function exportProfile() {
 function deleteProfile() {
   if (confirm('Tem certeza que deseja excluir seu perfil? Esta ação não pode ser desfeita.')) {
     localStorage.removeItem('appUser');
+    localStorage.removeItem('currentUser');
     localStorage.removeItem('isLoggedIn');
     showNotification('Perfil excluído com sucesso!', 'success');
     

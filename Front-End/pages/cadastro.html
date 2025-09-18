@@ -43,17 +43,11 @@
                             
                             <form id="signup-form">
                                 <div class="row">
-                                    <div class="col-md-6 mb-3">
+                                    <div class="col-12 mb-3">
                                         <label for="signup-nome" class="form-label">
                                             <i class="bi bi-person"></i> Nome
                                         </label>
                                         <input type="text" class="form-control" id="signup-nome" placeholder="Digite seu nome" required>
-                                    </div>
-                                    <div class="col-md-6 mb-3">
-                                        <label for="signup-sobrenome" class="form-label">
-                                            <i class="bi bi-person"></i> Sobrenome
-                                        </label>
-                                        <input type="text" class="form-control" id="signup-sobrenome" placeholder="Digite seu sobrenome" required>
                                     </div>
                                 </div>
                                 
@@ -111,75 +105,15 @@
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
-    <!-- Custom JS -->
-    <script src="/Front-End/js/global.js"></script>
-    <script src="/Front-End/js/cadastro.js"></script>
+    <!-- Supabase JS -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
-    <script>
-        document.getElementById('signup-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const nome = document.getElementById('signup-nome').value;
-            const sobrenome = document.getElementById('signup-sobrenome').value;
-            const email = document.getElementById('signup-email').value;
-            const senha = document.getElementById('signup-senha').value;
-            const confirmarSenha = document.getElementById('signup-confirmar-senha').value;
-            
-            // Validate passwords match
-            if (senha !== confirmarSenha) {
-                showNotification('As senhas não coincidem!', 'error');
-                return;
-            }
-            
-            // Validate password length
-            if (senha.length < 6) {
-                showNotification('A senha deve ter pelo menos 6 caracteres!', 'error');
-                return;
-            }
-            
-            // Save user data
-            const userData = {
-                nome: nome,
-                sobrenome: sobrenome,
-                email: email,
-                senha: senha // In real app, this would be hashed
-            };
-            
-            localStorage.setItem('appUser', JSON.stringify(userData));
-            
-            showNotification('Conta criada com sucesso!', 'success');
-            
-            // Redirect to login after 2 seconds
-            setTimeout(() => {
-                window.location.href = './index.html';
-            }, 2000);
-        });
+    <!-- Custom JS -->
+    <script src="../js/supabase.js"></script>
+    <script src="../js/global.js"></script>
+    <script src="../js/cadastro.js"></script>
+    
 
-        function showNotification(message, type = 'info') {
-            const notification = document.createElement('div');
-            notification.className = `alert alert-${type === 'error' ? 'danger' : type} alert-dismissible fade show position-fixed`;
-            notification.style.cssText = `
-                top: 20px;
-                right: 20px;
-                z-index: 10000;
-                min-width: 300px;
-                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            `;
-            
-            notification.innerHTML = `
-                ${message}
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            `;
-            
-            document.body.appendChild(notification);
-            
-            setTimeout(() => {
-                if (notification.parentNode) {
-                    notification.remove();
-                }
-            }, 5000);
-        }
-    </script>
 </body>
 </html>
 

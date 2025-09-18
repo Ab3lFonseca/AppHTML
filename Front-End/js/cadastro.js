@@ -123,7 +123,6 @@ function validateField(field) {
   
   switch(fieldName) {
     case 'nome':
-    case 'sobrenome':
       if (value.length < 2) {
         isValid = false;
         errorMessage = 'Deve ter pelo menos 2 caracteres';
@@ -228,7 +227,6 @@ function submitForm() {
   
   const userData = {
     nome: document.getElementById('cadastro-nome').value,
-    sobrenome: document.getElementById('cadastro-sobrenome').value,
     email: document.getElementById('cadastro-email').value,
     telefone: document.getElementById('cadastro-telefone').value,
     senha: document.getElementById('cadastro-senha').value,
@@ -336,4 +334,93 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 });
+
+
+
+// Script para cadastro com Supabase
+document.getElementById('signup-form').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  
+  const nome = document.getElementById('signup-nome').value.trim();
+  const email = document.getElementById('signup-email').value.trim();
+  const senha = document.getElementById('signup-senha').value;
+  const confirmarSenha = document.getElementById('signup-confirmar-senha').value;
+  
+  // Validate passwords match
+  if (senha !== confirmarSenha) {
+    showNotification('As senhas não coincidem!', 'error');
+    return;
+  }
+  
+  // Validate password length
+  if (senha.length < 6) {
+    showNotification('A senha deve ter pelo menos 6 caracteres!', 'error');
+    return;
+  }
+  
+  // Validate required fields
+  if (!nome || !email || !senha) {
+    showNotification('Por favor, preencha todos os campos obrigatórios!', 'error');
+    return;
+  }
+  
+  try {
+    showLoading();
+    
+    // Inicializar Supabase se necessário
+    if (!window.SupabaseAPI) {
+      showNotification('Erro: Sistema não inicializado', 'error');
+      return;
+    }
+    
+    SupabaseAPI.init();
+    
+    // Verificar se email já existe
+    const { data: existingUser } = await SupabaseAPI.usuarios.getByEmail(email);
+    if (existingUser) {
+      showNotification('Este email já está em uso!', 'error');
+      return;
+    }
+    
+    // Criar novo usuário
+    const userData = {
+      nomeUsu: nome,
+      emailUsu: email,
+      senhaUsu: senha, // Em produção, deve ser hash
+      telefoneUsu: null,
+      imgmUsu: null
+    };
+    
+    const { data: newUser, error } = await SupabaseAPI.usuarios.create(userData);
+    
+    if (error) {
+      showNotification('Erro ao criar conta: ' + error, 'error');
+      return;
+    }
+    
+    if (!newUser || !newUser[0]) {
+      showNotification('Erro ao criar conta. Tente novamente.', 'error');
+      return;
+    }
+    
+    // Salvar dados do usuário
+    localStorage.setItem('isLoggedIn', 'true');
+    localStorage.setItem('currentUser', JSON.stringify(newUser[0]));
+    localStorage.setItem('appUser', JSON.stringify(newUser[0])); // Para compatibilidade
+    
+    showNotification('Conta criada com sucesso!', 'success');
+    
+    // Redirect to home page
+    setTimeout(() => {
+      window.location.href = 'paginaInicial.html';
+    }, 2000);
+    
+  } catch (err) {
+    console.error('Erro no cadastro:', err);
+    showNotification('Erro na conexão. Tente novamente.', 'error');
+  } finally {
+    hideLoading();
+  }
+});
+
 
